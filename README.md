@@ -1,4 +1,4 @@
-## Desenvolvedor: Guilherme Santos Guimarães
+## Guilherme Santos Guimarães
 
 # 🚀 **Projeto completo (P1)**
 
