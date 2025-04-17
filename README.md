@@ -8,7 +8,7 @@ Um projeto completo de compilador, assembler e executor desenvolvido em C. Esta 
 - **Executor**: Roda o código compilado em uma máquina virtual simples.
 
 ## 💼 **Funcionalidades**:
-- Suporte para expressões aritméticas básicas (adição, subtração, multiplicação, divisão).
+- Suporte para expressões aritméticas básicas (adição, subtração e multiplicação).
 - Geração de código assembly otimizado para expressões constantes.
 - Máquina virtual simples com arquitetura baseada em acumulador.
 - Formato binário compacto para execução.
