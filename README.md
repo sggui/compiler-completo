@@ -1,4 +1,4 @@
-# 🚀 **Sistema Simples de Compilação**
+# 🚀 **Projeto Completo (P1)**
 
 Um projeto completo de compilador, assembler e executor desenvolvido em C. Esta é uma implementação acadêmica que demonstra o ciclo completo de compilação, desde o código fonte até a execução.
 
