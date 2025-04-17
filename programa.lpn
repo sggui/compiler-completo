@@ -1,0 +1,7 @@
+PROGRAMA "exemplop1":
+INICIO
+a = 2
+b = 3
+c = 4
+RES = (c + a - b) * b
+FIM
