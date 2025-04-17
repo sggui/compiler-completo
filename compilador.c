@@ -204,12 +204,9 @@ void scanTokens() {
     
     insertToken(TK_END_OF_FILE, "EOF");
 
-    // Print tokens for debugging
-    printf("=== Token Analysis Complete (%d tokens) ===\n", tokenTotal);
     for (int i = 0; i < tokenTotal; i++) {
-        printf("Token[%d]: Type=%d, Text='%s'\n", i, tokenArray[i].category, tokenArray[i].text);
+        printf("Token[%d]:  Text='%s'\n", i, tokenArray[i].text);
     }
-    printf("=== End of Token List ===\n");
 }
 
 LexicalToken* peekNextToken() {
@@ -334,7 +331,7 @@ Command* lastCommand = NULL;
 void parseAssignmentStmt() {
     LexicalToken* token = consumeToken(); // expect identifier
     if (!token || token->category != TK_NAME) {
-        printf("Warning: Assignment error - expected identifier\n");
+        printf("Warning: Esperado identificador\n");
         return;
     }
     
@@ -343,7 +340,7 @@ void parseAssignmentStmt() {
     
     LexicalToken* equals = consumeToken(); // expect '='
     if (!equals || equals->category != TK_ASSIGN) {
-        printf("Warning: Assignment error - expected '='\n");
+        printf("Esperado '='\n");
         return;
     }
     
@@ -362,7 +359,6 @@ void parseAssignmentStmt() {
         lastCommand = cmd;
     }
     
-    printf("Debug Info: Assignment parsed -> %s = (expression)\n", varName);
 }
 
 /* Program structure representation */
@@ -405,30 +401,27 @@ void freeCommands(Command* cmd) {
 void parseProgram() {
     LexicalToken* token = consumeToken(); // Should be PROGRAMA
     if (!token || token->category != TK_START) { 
-        printf("Error: Expected PROGRAMA keyword\n"); 
+        printf("Erro: Esperado PROGRAMA no cabeçalho (consultar gramatica.pdf)\n"); 
         exit(1); 
     }
     
     token = consumeToken(); // Program name (in quotes)
     if (!token || token->category != TK_NAME) { 
-        printf("Error: Expected program name\n"); 
+        printf("Erro: Esperado NOME DO PROGRAMA no cabeçalho (consultar gramatica.pdf)\n"); 
         exit(1); 
     }
     strncpy(program.title, token->text, sizeof(program.title));
-    printf("Debug: Program title = '%s'\n", program.title);
     
     token = consumeToken(); // Should be ":"
     if (!token || token->category != TK_DELIMITER) { 
-        printf("Error: Expected ':' after program name\n"); 
         exit(1); 
     }
     
     token = consumeToken(); // Should be INICIO
     if (!token || token->category != TK_BEGIN) { 
-        printf("Error: Expected INICIO keyword\n"); 
+        printf("Erro: Esperado INICIO no código (consultar gramatica.pdf)\n"); 
         exit(1); 
     }
-    printf("Debug: Found INICIO statement\n");
     
     // Process assignments until we find RES
     while (1) {
@@ -441,26 +434,23 @@ void parseProgram() {
     
     token = consumeToken(); // Should be RES
     if (!token || token->category != TK_RESULT) { 
-        printf("Error: Expected RES keyword\n"); 
+        printf("Erro: Esperado RES para armazenar o retorno do programa (consultar gramatica.pdf)\n"); 
         exit(1); 
     }
-    printf("Debug: Found RES statement\n");
     
     token = consumeToken(); // Should be '='
     if (!token || token->category != TK_ASSIGN) { 
-        printf("Error: Expected '=' after RES\n"); 
+        printf("Erro: Esperado '=' após RES (consultar gramatica.pdf)\n"); 
         exit(1); 
     }
     
     program.output = parseExpression();
-    printf("Debug: Final expression parsed\n");
     
     token = consumeToken(); // Should be FIM
     if (!token || token->category != TK_FINISH) { 
-        printf("Error: Expected FIM keyword\n"); 
+        printf("Erro: Esperado FIM para finalizar o programa (consultar gramatica.pdf)\n"); 
         exit(1); 
     }
-    printf("Debug: Found FIM statement\n");
 }
 
 /*========================================================================
@@ -489,8 +479,6 @@ int addSymbol(const char* identifier) {
     symbolTable[symbolCount].data = 0;
     symbolTable[symbolCount].initialized = false;
     symbolCount++;
-    
-    printf("Debug: Added symbol '%s' to table\n", identifier);
     return symbolCount - 1;
 }
 
@@ -500,7 +488,6 @@ void updateSymbolValue(const char* identifier, int value) {
         if (strcmp(symbolTable[i].identifier, identifier) == 0) {
             symbolTable[i].data = value;
             symbolTable[i].initialized = true;
-            printf("Debug: Updated symbol '%s' with value %d\n", identifier, value);
             return;
         }
     }
@@ -549,12 +536,10 @@ void generateExprCode(SyntaxNode* node) {
         sprintf(constName, "CONST_%d", node->value);
         registerConstant(node->value);
         fprintf(asmOutput, "LDA %s\n", constName);
-        printf("Debug: Generated code: LDA %s  [value=%d]\n", constName, node->value);
     } 
     else if (node->category == NODE_IDENTIFIER) {
         addSymbol(node->identifier);
         fprintf(asmOutput, "LDA %s\n", node->identifier);
-        printf("Debug: Generated code: LDA %s\n", node->identifier);
     } 
     else if (node->category == NODE_OPERATION) {
         char op = node->operation.operator;
@@ -719,8 +704,6 @@ void generateExprCode(SyntaxNode* node) {
                 
                 if (multiplier >= 0) {
                     // Use the known value
-                    printf("Debug: Variable %s has known value: %d\n", 
-                           node->operation.rightChild->identifier, multiplier);
                     for (int i = 0; i < multiplier; i++) {
                         generateExprCode(node->operation.leftChild); // Load left operand
                         fprintf(asmOutput, "ADD %s\n", resultTemp);
@@ -745,8 +728,8 @@ void generateExprCode(SyntaxNode* node) {
                 
                 // Check for division by zero
                 if (node->operation.rightChild->value == 0) {
-                    fprintf(stderr, "Error: Division by zero detected\n");
-                    fprintf(asmOutput, "; Error: Division by zero\n");
+                    fprintf(stderr, "Erro: Divisão por 0 detectada\n");
+                    fprintf(asmOutput, "; Erro: Divisão por 0\n");
                     fprintf(asmOutput, "LDA CONST_0\n");
                     return;
                 }
@@ -757,8 +740,6 @@ void generateExprCode(SyntaxNode* node) {
                 sprintf(constName, "CONST_%d", result);
                 registerConstant(result);
                 fprintf(asmOutput, "LDA %s\n", constName);
-                printf("Debug: Optimized division %d / %d = %d\n", 
-                       node->operation.leftChild->value, node->operation.rightChild->value, result);
             } 
             else {
                 // General division algorithm
@@ -789,8 +770,8 @@ void generateExprCode(SyntaxNode* node) {
                 // Load divisor
                 if (node->operation.rightChild->category == NODE_LITERAL) {
                     if (node->operation.rightChild->value == 0) {
-                        fprintf(stderr, "Error: Division by zero detected\n");
-                        fprintf(asmOutput, "; Error: Division by zero\n");
+                        fprintf(stderr, "Erro: Divisão por 0 detectada\n");
+                        fprintf(asmOutput, "; Erro: Division by zero\n");
                         fprintf(asmOutput, "LDA CONST_0\n");
                         return;
                     }
@@ -830,7 +811,6 @@ void generateExprCode(SyntaxNode* node) {
         
                 // Load final quotient
                 fprintf(asmOutput, "LDA %s\n", quotient);
-                printf("Debug: Generated division code with result in %s\n", quotient);
             }
         }
     }
@@ -846,13 +826,11 @@ void generateAssignmentCode(Command* cmd) {
         registerConstant(cmd->expression->value);
         fprintf(asmOutput, "LDA %s\n", constName);
         fprintf(asmOutput, "STA %s\n", cmd->variable);
-        printf("Debug: Generated direct assignment: %s = %d\n", cmd->variable, cmd->expression->value);
     } else {
         // For complex expressions, generate normal code
         generateExprCode(cmd->expression);
         addSymbol(cmd->variable);
         fprintf(asmOutput, "STA %s\n", cmd->variable);
-        printf("Debug: Generated assignment: %s = <expression>\n", cmd->variable);
     }
 }
 
@@ -914,7 +892,7 @@ void generateAssemblyCode() {
     fprintf(asmOutput, "STA RESULT\n");
     fprintf(asmOutput, "HALT\n");
     
-    printf("Debug: Assembly code successfully generated!\n");
+    printf("Código assembly gerado!\n");
 }
 
 int main(int argc, char **argv) {
@@ -925,7 +903,7 @@ int main(int argc, char **argv) {
 
     FILE* inputFile = fopen(argv[1], "r");
     if (!inputFile) {
-        perror("Error opening .lpn file");
+        perror("Erro para abrir .lpn");
         return 1;
     }
 
@@ -937,7 +915,7 @@ int main(int argc, char **argv) {
     // Allocate memory for file content
     inputCode = (char*)malloc(fileSize + 1);
     if (!inputCode) {
-        perror("Memory allocation error");
+        perror("Erro na alocação de memória");
         fclose(inputFile);
         return 1;
     }
@@ -957,7 +935,7 @@ int main(int argc, char **argv) {
     
     asmOutput = fopen(outputFilename, "w");
     if (!asmOutput) {
-        perror("Error creating output .asm file");
+        perror("Erro para criar .asm");
         free(inputCode);
         return 1;
     }
@@ -983,6 +961,7 @@ int main(int argc, char **argv) {
     free(inputCode);
     fclose(asmOutput);
     
-    printf("Compilation successful. Output file: %s\n", outputFilename);
+    printf("(successful) Arquivo gerado sem erros de compilação. Arquivo: %s\n", outputFilename);
     return 0;
 }
+

@@ -3,7 +3,7 @@ all: compilador assembler executor
 
 # Regras para compilador
 compilador: 
-	gcc -o compilador compiler.c
+	gcc -o compilador compilador.c
 
 # Regras para assembler
 assembler: 

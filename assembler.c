@@ -167,7 +167,7 @@ int main(int argc, char* argv[]) {
     fwrite(memory, 1, MEM_SIZE, out);
     fclose(src);
     fclose(out);
-    printf("Binário gerado com sucesso!\n");
+    printf("(successful) Binário gerado com sucesso!\n");
     return 0;
 }
 
