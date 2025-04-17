@@ -44,3 +44,8 @@ FIM
 - Implementado completamente em C
 - Demonstra conceitos básicos de compilação
 - Inclui análise léxica, sintática e geração de código
+
+**Limitações pertinentes** ⚠️
+- Deve ser executado um a um (seguindo a ordem do item de "Como usar"), não tem um make run que já gere o programa final e execute.
+- Os nomes precisam seguir: programa.<tipo>, ou seja, programa.lpn, programa.asm e programa.bin.
+- Funcionam apenas as operações: Soma, Subtração e Multiplicação. Divisão buga e fica em loop infinito ao tentar usar.
