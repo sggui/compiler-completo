@@ -1,7 +1,7 @@
 <modulo> ::= "PROGRAMA" <espaco>? <identificador> ":" <quebra>
              <bloco_codigo>
 
-<identificador> ::= "\"" ? <nome> "\"" ?
+<identificador> ::= "\"" <nome> "\"" | <nome>
 <nome> ::= <alfanumerico> <resto_nome>?
 <resto_nome> ::= <alfanumerico>*
 
@@ -21,3 +21,4 @@
 <numero> ::= [0-9]+
 <espaco> ::= (" " | "\t")*
 <quebra> ::= "\n"
+
