@@ -2,7 +2,7 @@
 
 # 🚀 **Projeto completo (P1)**
 
-Um projeto completo de compilador, assembler e executor desenvolvido em C. Esta é uma implementação acadêmica que demonstra o ciclo completo de compilação, desde o código fonte até a execução.
+Um projeto completo de compilador, assembler e executor desenvolvido em C. Esta é uma implementação que demonstra o ciclo completo de compilação, desde o código fonte até a execução.
 
 ## 🛠️ **Componentes principais**:
 - **Compilador**: Traduz linguagem de alto nível para assembly.
@@ -42,6 +42,6 @@ FIM
 ```
 
 **Limitações pertinentes** ⚠️
-- Deve ser executado um a um (seguindo a ordem do item de "Como usar"), não tem um make run que já gere o programa final e execute.
-- Os nomes precisam seguir: programa."tipo", ou seja, programa.lpn, programa.asm e programa.bin.
+- Deve ser executado um a um (seguindo a ordem do item de "Como usar").
+- Os nomes precisam seguir obrigatoriamente: programa."tipo", ou seja, programa.lpn, programa.asm e programa.bin, uma vez que isso foi "chumbado" no código.
 - Funcionam apenas as operações: Soma, Subtração e Multiplicação. Divisão buga e fica em loop infinito ao tentar usar.
