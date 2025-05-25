@@ -1,9 +1,3 @@
-## Guilherme Santos Guimarães
-
-# **Projeto completo (P1)**
-
-Um projeto completo de compilador, assembler e executor desenvolvido em C. Esta é uma implementação que demonstra o ciclo completo de compilação, desde o código fonte até a execução.
-
 ## **Componentes principais**:
 - **Compilador**: Traduz linguagem de alto nível para assembly.
 - **Assembler**: Converte código assembly em código de máquina.
